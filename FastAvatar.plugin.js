@@ -3,9 +3,9 @@
  * @author Amir
  * @version 1.0.0
  * @description Show user avatar by clicking on profile picture.
- * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/BadgesEverywhere/
- * @updateUrl
- * @authorLink
+ * @source https://github.com/Amir-78/BetterDiscord/blob/main/FastAvatar.plugin.js
+ * @updateUrl https://raw.githubusercontent.com/Amir-78/BetterDiscord/main/FastAvatar.plugin.js
+ * @authorLink https://github.com/Amir-78/BetterDiscord
  */
 
 module.exports = class FastAvatar {
