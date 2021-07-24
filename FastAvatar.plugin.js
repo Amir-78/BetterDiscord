@@ -28,7 +28,6 @@ const config = {
 
 class FastAvatar {
 
-
     getName() { return config.info.name; }
     getAuthor() { return config.info.authors.map(a => a.name).join(", "); }
     getDescription() { return config.info.description; }
