@@ -1,7 +1,7 @@
 /**
  * @name FastAvatar
  * @author Amir
- * @version 1.0.3
+ * @version 1.0.4
  * @description Show user avatar by clicking on profile picture.
  * @source https://github.com/Amir-78/BetterDiscord/blob/main/FastAvatar.plugin.js
  * @updateUrl https://raw.githubusercontent.com/Amir-78/BetterDiscord/main/FastAvatar.plugin.js
@@ -13,7 +13,7 @@ const config = {
         name: "FastAvatar",
         authors: [{ name: "Amir", github_username: "Amir-78", discord_id: "654357339691941899" }],
         description: "Show user avatar by clicking on profile picture.",
-        version: "1.0.3",
+        version: "1.0.4",
         github: "https://github.com/Amir-78/BetterDiscord/blob/main/FastAvatar.plugin.js",
         github_raw: "https://raw.githubusercontent.com/Amir-78/BetterDiscord/main/FastAvatar.plugin.js"
     },
@@ -38,7 +38,7 @@ class FastAvatar {
 
         if (!global.ZeresPluginLibrary) {
 
-            BdApi.showConfirmationModal(
+            return BdApi.showConfirmationModal(
                 "Library plugin is needed",
                 [`The library plugin needed for ${config.info.name} is missing. Please click Download to install it.`], {
                 confirmText: "Download",
@@ -60,7 +60,24 @@ class FastAvatar {
     }
 
     start() {
-        if (!global.ZeresPluginLibrary) return window.BdApi.alert("Library Missing", `The library plugin needed for ${this.getName()} is missing.<br /><br /> <a href="https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js" target="_blank">Click here to download the library!</a>`);
+        if (!global.ZeresPluginLibrary) {
+
+            return BdApi.showConfirmationModal(
+                "Library plugin is needed",
+                [`The library plugin needed for ${config.info.name} is missing. Please click Download to install it.`], {
+                confirmText: "Download",
+                cancelText: "Cancel",
+                onConfirm: () => {
+                    require("request").get("https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js", async (error, response, body) => {
+                        if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js");
+                        await new Promise(r => require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"), body, r));
+                    });
+                }
+            }
+            );
+
+
+        }
         ZLibrary.PluginUpdater.checkForUpdate(this.getName(), this.getVersion(), this.getRaw());
 
         document.addEventListener("click", this.showAvatar);
@@ -69,9 +86,27 @@ class FastAvatar {
     }
 
     stop() {
+                if (!global.ZeresPluginLibrary) {
+
+            return BdApi.showConfirmationModal(
+                "Library plugin is needed",
+                [`The library plugin needed for ${config.info.name} is missing. Please click Download to install it.`], {
+                confirmText: "Download",
+                cancelText: "Cancel",
+                onConfirm: () => {
+                    require("request").get("https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js", async (error, response, body) => {
+                        if (error) return require("electron").shell.openExternal("https://betterdiscord.net/ghdl?url=https://raw.githubusercontent.com/rauenzi/BDPluginLibrary/master/release/0PluginLibrary.plugin.js");
+                        await new Promise(r => require("fs").writeFile(require("path").join(BdApi.Plugins.folder, "0PluginLibrary.plugin.js"), body, r));
+                    });
+                }
+            }
+            );
+
+
+        }
+        ZLibrary.PluginUpdater.checkForUpdate(this.getName(), this.getVersion(), this.getRaw());
         document.removeEventListener("click", this.showAvatar);
         document.removeEventListener("click", this.hideAvatar);
-        ZLibrary.PluginUpdater.checkForUpdate(this.getName(), this.getVersion(), this.getRaw());
 
     }
 
