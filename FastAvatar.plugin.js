@@ -72,6 +72,7 @@ class FastAvatar {
     stop() {
         document.removeEventListener("click", this.showAvatar);
         document.removeEventListener("click", this.hideAvatar);
+        ZLibrary.PluginUpdater.checkForUpdate(this.getName(), this.getVersion(), this.getRaw());
 
     }
 
